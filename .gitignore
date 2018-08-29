@@ -1,0 +1,10 @@
+# IDEs
+
+.vscode/**
+.idea/**
+*.iws
+*.iml
+*.ipr
+
+# Build artefacts
+/**/target
