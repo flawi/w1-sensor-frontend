@@ -66,4 +66,6 @@ interface SensorValueRepository : PagingAndSortingRepository<SensorValue, Long>{
     """)
     @Nullable
     fun getAvgSensorValue(sensorId: String, from: Instant, to: Instant) : Double
+
+    fun existsBySensorId(sensorId: String): Boolean
 }
