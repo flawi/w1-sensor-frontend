@@ -6,5 +6,5 @@
 *.iml
 *.ipr
 
-# Build artefacts
-/**/target
+# python venv
+venv
