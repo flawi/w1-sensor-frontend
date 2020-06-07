@@ -4,7 +4,7 @@ A collection of scripts and configurations to store 1-Wire (w1) sensor values in
 
 ## License
 
-The code is licensed under the MIT license. See details [here](LICENSE.md).
+The code is licensed under the MIT license. See details [here](LICENSE.txt).
 
 ## Motivation
 
