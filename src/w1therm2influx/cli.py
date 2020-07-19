@@ -16,15 +16,22 @@ class CliArguments:
 
 
 def cli():
-    parser = argparse.ArgumentParser(description="Collects values from W1 Sensors and writes them to Influx")
-    parser.add_argument("--database", dest="database", type=str, required=True)
-    parser.add_argument("--user", dest="user", type=str, required=True)
-    parser.add_argument("--password", dest="password", type=str, required=True)
-    parser.add_argument("--host", dest="host", type=str, required=False, default="localhost")
-    parser.add_argument("--port", dest="port", type=int, required=False, default=8086)
-    parser.add_argument("--measurement", dest="measurement", type=str, required=False, default="w1-values")
-    parser.add_argument("--polling-interval", dest="polling_interval", type=int, required=False, default=60)
-    parser.add_argument("--log-level", dest="log_level", type=str, required=False, default="WARNING")
+    parser = argparse.ArgumentParser(
+        description="Periodically collects values from all connected w1-sensors and writes them to Influx")
+    parser.add_argument("--database", dest="database", type=str, required=True,
+                        help="Database which stores the values.")
+    parser.add_argument("--user", dest="user", type=str, required=True, help="User to connect to database.")
+    parser.add_argument("--password", dest="password", type=str, required=True, help="Password of user.")
+    parser.add_argument("--host", dest="host", type=str, required=False, default="localhost",
+                        help="Influx host (defaults to 'localhost')")
+    parser.add_argument("--port", dest="port", type=int, required=False, default=8086,
+                        help="Port used by Influx (defaults to 8086)")
+    parser.add_argument("--measurement", dest="measurement", type=str, required=False, default="w1-values",
+                        help="Name of the measurement to be used to store values (defaults to 'w1-values')")
+    parser.add_argument("--polling-interval", dest="polling_interval", type=int, required=False, default=60,
+                        help="Number of seconds between fetch of values (defaults to 60).")
+    parser.add_argument("--log-level", dest="log_level", type=str, required=False, default="WARNING",
+                        help="Defines the level for logging (defaults to WARNING).")
     args = parser.parse_args(namespace=CliArguments())
 
     # configuring root logger
@@ -46,6 +53,9 @@ def run(args: CliArguments):
                             host=args.host,
                             port=args.port,
                             measurement=args.measurement) as collector:
+            print(f"Found {len(collector.sensors)} sensors. Collecting values every {args.polling_interval} "
+                  f"seconds...\nAbort with CTRL+C")
+
             while True:
                 logger.info("Writing sensor values...")
                 collector.collect_and_write()
